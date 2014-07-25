@@ -1,0 +1,114 @@
+<DOCTYPE html>
+<html>
+	<head>
+		<title> Form for registration</title>
+		<meta charset="utf-8">
+		<style>
+			form#multiphase{
+				border: #000 1px solid;
+				padding: 24px;
+				width: 350px; 
+			}
+			form#multiphase > #phase2, #phase3, #showAllData{
+				display: none;
+			}
+		</style>
+		<script>
+			var fname, lname, sex, country; 
+			function _(x){
+				return document.getElementById(x);
+			}
+
+
+			function processPhase1(){
+				fname = _("firstname").value;
+				lname = _("lastname").value;
+				if(fname.length > 2 && lname.length > 2){
+					_("phase1").style.display = "none";
+					_("phase2").style.display = "block";
+					_("progressBar").value = 33;
+					_("status").innerHTML = "Phase 2 of 3"
+				}
+				else{
+					alert("Please fill in the fiald");
+				}
+			}
+
+			function processPhase2(){
+				sex = _("sex").value;
+				if(sex.length > 0){
+					_("phase2").style.display = "none";
+					_("phase3").style.display = "block";
+					_("progressBar").value = 66;
+					_("status").innerHTML = "Phase 3 of 3"
+				}
+				else{
+					alert("Please fill in the fiald");
+				}
+			}
+			function processPhase3(){
+				country = _("country").value;
+				if(country.length > 0){
+					_("phase3").style.display = "none";
+					_("showAllData").style.display = "block";
+					_("distlay_fname").innerHTML = fname;
+					_("distlay_lname").innerHTML = lname;
+					_("distlay_sex").innerHTML = sex;
+					_("distlay_country").innerHTML = country;
+					_("progressBar").value = 100;
+					_("status").innerHTML = "Data Overview"
+				}
+				else{
+					alert("Please choose your country");
+				}
+			}
+
+			function submitForm(){
+				_("multiphase").method = "post";
+				_("multiphase").action = "DataSendToServer.php";
+				_("multiphase").submit();
+			}
+			/*
+			document.onload(function(){
+				document.getElementById("buttonForFirstLastName").addEventListener('click', function(){
+					processPhase1();
+				})
+			});*/
+		</script>
+	</head>
+	<body>
+	<progress id="progressBar" value="0" max="100" style = "width: 250px"></progress>
+	<h3 id="status">Phase 1 of 3</h3>
+		<form id="multiphase" onsubmit="return false">
+			<div id="phase1">
+				First name: <input id="firstname" name="firstname"><br>
+				Last name: <input id="lastname" nama="lastname"><br>
+				<button id="buttonForFirstLastName" onclick="processPhase1()">Continue</button>
+			</div>
+			<div id="phase2">
+				Sex: <select id="sex" name="sex">
+					<option value=""></option>
+					<option value="m">Male</option>
+					<option value="f">Female</option>
+				</select><br>
+				<button onclick="processPhase2()">Continue</button>
+			</div>
+			<div id="phase3">
+				Country: <select id="country" name="country">
+					<option value="Ukraine">Uraine</option>
+					<option value="Moldova">Moldova</option>
+					<option value="USA">USA</option>
+				</select><br>
+				<button onclick="processPhase3()">Continue</button>
+			</div>
+			<div id="showAllData">
+				First name: <span id="distlay_fname"></span><br>
+				Last name: <span id="distlay_lname"></span><br>
+				Sex: <span id="distlay_sex"></span><br>
+				Coutnry: <span id="distlay_country"></span><br>
+				<button onclick="submitForm()">Submit Data</button>
+			</div>
+			
+		</form>
+	</body>
+</html>
